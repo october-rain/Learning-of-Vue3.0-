@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 2</title>
+        <!-- <script src="https://unpkg.com/vue@next"></script> -->
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            // 创建vue示例
+            Vue.createApp({
+                data() {
+                    return {
+                        show: true,
+                        content: "hello world",
+                    }
+                },
+                methods: {
+                    handleBtnClick1() {
+                        const con = this.content.split("").reverse().join("")
+                        this.content = con
+                    },
+                    handleBtnClick2() {
+                        this.show = !this.show
+                    },
+                },
+                template: `
+                    <div>
+                        {{content}}
+                        <button v-on:click="handleBtnClick1">反转</button>
+                    </div>
+                    <div >
+                        <span v-if='show'>{{content}}</span>
+                        <button v-on:click="handleBtnClick2">显示/隐藏</button>
+                    </div>
+                `,
+            }).mount("#root") // 作用于 root
+        </script>
+    </body>
+</html>
