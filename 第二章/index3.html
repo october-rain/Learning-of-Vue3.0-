@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>模版语法</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // {{}} 插值表达式
+        // v-html，v-bind(:)，v-on(@), 动态参数（:[变量] @[变量]），修饰符
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hello world",
+                    show: false,
+                    event: "click",
+                }
+            },
+            methods: {
+                handleClick() {
+                    alert("click")
+                },
+            },
+            // @click.prevent 会阻止默认行为，比如下面例子里，添加了prevent就不会跳转
+            template: `
+            <div 
+                @[event]="handleClick"
+                :title="message"
+            >
+                {{message}}
+            </div>
+
+            <form 
+                action="https://www.baidu.com" 
+                @click.prevent="handleClick"
+            > 
+                <button type="submit">提交</button>
+            </form>
+    `,
+        })
+        const vm = app.mount("#root")
+    </script>
+</html>

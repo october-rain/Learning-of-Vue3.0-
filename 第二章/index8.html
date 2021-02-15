@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>事件绑定</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // event, $event
+        // 不传参时，函数自动传递event，如果事件传参时，需要手动传一个$event 表示原始参数
+
+        // 事件修饰符：stop(停止冒泡), prevent(阻止默认行为), capture(冒泡变成捕获), self(只有点击dom自身才会执行，不会因为冒泡就执行，即跳过冒泡), once(事件绑定只执行一次), passive(提升滚动的性能)
+
+        // 按键修饰符：enter, tab, delete, esc, up, down, left, right
+
+        // 鼠标修饰符：left, right, middle
+
+        // 精确修饰符：exact
+        const app = Vue.createApp({
+            data() {
+                return {
+                    counter: 0,
+                }
+            },
+            methods: {
+                test1(e) {
+                    console.log(e)
+                },
+                test2(number, event) {
+                    console.log(number)
+                    console.log(event)
+                },
+                handleClick1() {
+                    console.log("click1")
+                },
+                handleClick2() {
+                    console.log("click2")
+                },
+                handleClick3() {
+                    console.log("click3")
+                },
+            },
+            template: `
+      <div>
+        <div>
+            <button @click="test1">默认传递event</button>
+            <button @click="test2(1, $event)">手动传递event</button>
+        </div>
+        <div>
+            <button @click="handleClick1(), handleClick2()">一个click事件绑定两个方法，需要使用()</button>
+        </div>
+        <div @click="handleClick1">
+            <button @click.stop="handleClick2">停止冒泡</button>
+        </div>
+        <div @click="handleClick3">
+            <div @click.self="handleClick1">
+            修饰符 self 的作用：只有点击当前dom时才有效，不被冒泡(跳过冒泡)
+                <button @click="handleClick2">有self则拒绝冒泡，其他正常</button>
+            </div>
+        </div>
+        
+        <div @click.ctrl.exact="handleClick1">目前有bug，实际效果应该是，只有按住ctrl，点击才有效果（exact表示精确，不加exact，ctrl + 任意键 都可以产生效果，加了就不行）</div>
+      </div>
+    `,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>

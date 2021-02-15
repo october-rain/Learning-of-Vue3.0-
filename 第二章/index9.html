@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>双向绑定</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // 双向绑定和这些有关：input, textarea, checkbox, radio, select
+        // 修饰符 lazy（不同步反应，当触发blur事件失去焦点时，才响应）, number（让存储的数组是number类型，而不是string类型）, trim
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hello",
+                    answer: false,
+                    answer2: "hello",
+                    name: [],
+                    name2: "dyx",
+                    value: "",
+                }
+            },
+            template: `
+      <div>
+        <div>
+            {{answer}}
+            <input type="checkbox" v-model="answer"  />
+            {{answer2}}
+            <input type="checkbox" v-model="answer2" true-value="hello" false-value="world" />
+        </div>
+        <div>
+            {{name}}
+            jack <input type="checkbox" v-model="name" value="jack" />
+            dell <input type="checkbox" v-model="name" value="dell" />
+            lee <input type="checkbox" v-model="name" value="lee" />
+        </div>
+        <div>
+            {{name2}}
+            jack <input type="radio" v-model="name2" value="jack" />
+            dell <input type="radio" v-model="name2" value="dell" />
+            lee <input type="radio" v-model="name2" value="lee" />
+        </div>
+        <div>
+            {{value}}
+            <select v-model="value">
+                <option disabled value="">请选择内容</option>
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+            </select>
+        </div>
+
+        <div>
+            {{message}}
+            <input v-model.trim="message"  />
+        </div>
+      </div>
+    `,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>

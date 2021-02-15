@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>生命周期</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root">
+            <div v-on:click="handleItemClick">{{message}}</div>
+        </div>
+    </body>
+    <script>
+        // 生命周期函数：在某一时刻会自动执行的函数
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hello world",
+                }
+            },
+            methods: {
+                handleItemClick() {
+                    console.log("click")
+                },
+            },
+            // 实例生成前执行的函数
+            beforeCreate() {
+                console.log("beforeCreate")
+            },
+            // 实例生成后执行的函数
+            created() {
+                console.log("created")
+            },
+            // 模版被编译成函数前（组件内容被渲染到页面之前）执行的函数
+            beforeMount() {
+                console.log(
+                    "beforeMount ",
+                    document.getElementById("root").innerHTML
+                ) // 无内容
+            },
+            // 模版被编译成函数后（组件内容被渲染到页面之后）执行的函数
+            mounted() {
+                console.log(
+                    "mounted ",
+                    document.getElementById("root").innerHTML
+                ) // 有内容
+            },
+
+            // template 可以不写，直接写在div里
+            template: "<div v-on:click='handleItemClick'>{{message}}</div>",
+
+            // 数据改变的时候就执行的函数，但是还未渲染
+            beforeUpdate() {
+                console.log(
+                    "beforeUpdate",
+                    document.getElementById("root").innerHTML
+                )
+            },
+            // 页面重新渲染后才执行的函数
+            updated() {
+                console.log(
+                    "Updated",
+                    document.getElementById("root").innerHTML
+                )
+            },
+            // vue 应用失效时（执行app.unmount()）执行的函数，dom还在时执行的函数
+            beforeUnmount() {
+                console.log(
+                    "beforeUnmount",
+                    document.getElementById("root").innerHTML
+                )
+            },
+            // vue 应用失效时（执行app.unmount()）执行的函数，且dom完全销毁时执行的函数
+            unmounted() {
+                console.log(
+                    "unmounted",
+                    document.getElementById("root").innerHTML
+                )
+            },
+        })
+        const vm = app.mount("#root")
+    </script>
+</html>
