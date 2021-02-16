@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03-08.作用域插槽</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // 作用域插槽
+        const app = Vue.createApp({
+            template: `
+    <layout>
+        <template #header>
+            具名插槽的简写形式———— v-slot:header -> #header
+        </template>
+        <template #footer>
+            <div>footer</div>
+        </template>
+    </layout>
+
+    这里的 v-slot="{item}" 这个用法是解构赋值，实际上可以写 v-slot="slotProps" 下面的值用 slotProps.item
+    <list v-slot="{item}">
+        <div>{{item}}</div>
+    </list>
+    `,
+        })
+
+        app.component("layout", {
+            template: `
+    <div>
+        <slot name="header"></slot>
+        <div>content</div>
+        <slot name="footer"></slot>
+    </div>
+    `,
+        })
+        app.component("list", {
+            data() {
+                return { list: [1, 2, 3] }
+            },
+            template: `
+    <div>
+        <slot v-for="item in list" :item="item" />
+    </div>
+    `,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>

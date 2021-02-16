@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03-02.组件间传值及传值校验</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return { num: 1234 }
+            },
+            template: `
+      <div><test :content="num" /></div>
+    `,
+        })
+
+        // type 的可选值 String, Boolean, Array, Object, Function, Symbol
+        // required 必填
+        // validator 专业校验
+        // default 默认值
+        app.component("test", {
+            props: {
+                content: {
+                    type: Number,
+                    validator: function (value) {
+                        return value < 1000
+                    },
+                    required: true, // 表示必须传递 content
+                    default: function () {
+                        return 456
+                    },
+                },
+            },
+            template: `<div>{{content}}</div>`,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>

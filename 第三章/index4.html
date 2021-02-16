@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03-04.Non-Props 属性是什么</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // Non-prop 属性：父组件给子组件传递内容的时候，不使用props接收数据
+        const app = Vue.createApp({
+            template: `
+      <div>
+        <counter msg="hello" msg1="hello1" />
+      </div>
+    `,
+        })
+
+        app.component("counter", {
+            // inheritAttrs: false,
+            mounted() {
+                console.log(this.$attrs)
+            },
+            template: `
+      <div :msg="$attrs.msg">Counter</div>
+      <div :="$attrs">Counter</div>
+      <div :msg1="$attrs.msg1">Counter</div>
+    `,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>

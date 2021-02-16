@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03-05.父子组件间如何通过事件进行通信</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 1,
+                    count2: 1,
+                }
+            },
+            methods: {
+                handleAddOne(param) {
+                    this.count += param
+                },
+            },
+            template: `
+            <div>
+                <counter1 :count="count" @addOne="handleAddOne"/>
+
+                <counter2 v-model="count2" />
+            </div>
+    `,
+        })
+        app.component("counter1", {
+            props: ["count"],
+            // emits 表示这个组件只会触发数组内的事件，若触发事件不在数组或对象内，会warning
+            // emits: ["addOne"],
+            emits: {
+                // 对象类型的 emits 还可以对触发事件传入参数进行校验
+                addOne: (count) => {
+                    if (count < 0) return false
+                    return true
+                },
+            },
+            methods: {
+                addOne() {
+                    // 第二个参数，会被携带到 21行 代码处
+                    this.$emit("addOne", 2)
+                },
+            },
+            template: `
+            以下为普通使用
+                <div @click="addOne">
+                    {{count}}
+                </div>
+            `,
+        })
+
+        // 以下比较高级 具体可以看视频 3-7 可以重命名（不使用modelValue）
+        app.component("counter2", {
+            props: ["modelValue"],
+            methods: {
+                handleClick() {
+                    this.$emit("update:modelValue", this.modelValue + 3)
+                },
+            },
+            template: `
+            以下为高级使用
+      <div @click="handleClick">{{modelValue}}</div>
+    `,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>

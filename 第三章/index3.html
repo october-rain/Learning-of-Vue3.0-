@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03-03.单项数据流的理解</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // v-bind="params" 等价于 :content="params.content" :a="params.a" :b="params.b" :c="params.c" 前者更精简
+
+        // 属性传递的时候，使用 content-abc 这种命名，而接收值的时候，使用 contentAbc 命名
+
+        // 单项数据流的概念: 子组件可以使用父组件传递过来的数据，但是绝对不能修改传递过来的数据
+        const app = Vue.createApp({
+            data() {
+                return { num: 1 }
+            },
+            template: `
+      <div>
+        如果可以修改传递过来的数据，则会导致下面的三行同时改变
+        <counter :count="num" />
+        <counter :count="num" />
+        <counter :count="num" />
+      </div>
+    `,
+        })
+
+        app.component("counter", {
+            props: ["count"],
+            data() {
+                return {
+                    newCount: this.count,
+                }
+            },
+            template: `<div @click="newCount += 1">{{newCount}}</div>`,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>

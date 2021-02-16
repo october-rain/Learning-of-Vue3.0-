@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03-10.基础语法知识点查缺补漏</title>
+        <script src="../js/vue3.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // v-once 让某个元素标签只渲染一次，后面即使数据发生变化，也不再渲染
+        // ref 实际上是获取 Dom 节点 / 组件引用 的一个语法
+        // provide / inject
+        const app = Vue.createApp({
+            data() {
+                return { count: 1 }
+            },
+            mounted() {
+                console.log(this.$refs.count)
+                console.log(this.$refs.kid)
+            },
+            provide() {
+                return {
+                    count: this.count,
+                }
+            },
+            template: `
+    
+      <div>
+        ref的使用：ref 实际上是获取 Dom 节点 / 组件引用 的一个语法
+        <div ref="count">
+            {{count}}
+        </div>
+        provide inject(注入)的使用：这种写法不是响应式的，目前基础语法还不能解决，后面vue3的新语法可以解决
+        <child :count="count" ref="kid" />
+        <button @click="count += 1">Add</button>
+      </div>
+    `,
+        })
+
+        app.component("child", {
+            template: `<child-child />`,
+        })
+
+        app.component("child-child", {
+            inject: ["count"],
+            template: `<div>{{count}}</div>`,
+        })
+
+        const vm = app.mount("#root")
+    </script>
+</html>
